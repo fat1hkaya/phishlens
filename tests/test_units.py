@@ -25,6 +25,15 @@ from phishlens.urls import extract_urls, levenshtein, lookalike_brand
         ("login.microsoftonline.microsoft.com", None),
         ("github.com", None),
         ("example.org", None),
+        # Brand-owned infrastructure must not be flagged (regression: false positives).
+        ("login.microsoftonline.com", None),
+        ("s3.amazonaws.com", None),
+        ("lh3.googleusercontent.com", None),
+        ("www.paypalobjects.com", None),
+        ("outlook.office365.com", None),
+        ("www.amazon.com.tr", None),
+        ("www.garanti.com.tr", None),
+        ("na3.docusign.net", None),
     ],
 )
 def test_lookalike_brand(host, brand):
