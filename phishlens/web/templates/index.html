@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <h1>Analyze a suspicious e-mail</h1>
+  <p class="muted">Upload a raw <code>.eml</code> file (in Outlook: <i>File → Save As → .msg/.eml</i>, in Gmail: <i>⋮ → Download message</i>).
+    Headers, links and attachments are analyzed locally; threat-intel lookups only run when API keys are configured.</p>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('analyze') }}" enctype="multipart/form-data">
+    <div class="drop">
+      <input type="file" name="eml" accept=".eml,message/rfc822" required>
+      <p class="muted">Max {{ max_mb }} MB</p>
+    </div>
+    <p style="margin-top:16px"><button class="btn" type="submit">Analyze</button></p>
+  </form>
+</section>
+<section class="panel">
+  <h2>Try a sample</h2>
+  <p class="muted">Synthetic, harmless samples bundled with the project.</p>
+  {% for s in samples %}
+    <a class="btn secondary" style="margin:4px 4px 0 0" href="{{ url_for('sample', name=s) }}">{{ s }}</a>
+  {% endfor %}
+</section>
+<section class="panel">
+  <h2>Threat intel status</h2>
+  <div class="auth">
+    {% for name, on in providers.items() %}<div>{{ name }}: <b class="{{ 'pass' if on else 'none' }}">{{ "on" if on else "off" }}</b></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

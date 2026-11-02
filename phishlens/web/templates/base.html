@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}PhishLens{% endblock %}</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+    --accent: #58a6ff; --critical: #ff4d6d; --high: #ff8c42; --medium: #f2cc60; --low: #7ee787; --info: #8b949e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header { border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header .logo { font-weight: 700; font-size: 18px; letter-spacing: .3px; }
+  header .logo span { color: var(--accent); }
+  header .tag { color: var(--muted); font-size: 13px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  h1, h2, h3 { margin: 0 0 12px; } h2 { font-size: 18px; } h3 { font-size: 15px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; word-break: break-word; }
+  th { color: var(--muted); font-weight: 600; }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; }
+  .muted { color: var(--muted); }
+  .verdict { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .score { font-size: 44px; font-weight: 800; }
+  .nowrap { white-space: nowrap; }
+  .badge { white-space: nowrap; display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+  .sev-critical { background: rgba(255,77,109,.18); color: var(--critical); }
+  .sev-high { background: rgba(255,140,66,.18); color: var(--high); }
+  .sev-medium { background: rgba(242,204,96,.18); color: var(--medium); }
+  .sev-low { background: rgba(126,231,135,.15); color: var(--low); }
+  .sev-info { background: rgba(139,148,158,.15); color: var(--info); }
+  .v-MALICIOUS { color: var(--critical); } .v-SUSPICIOUS { color: var(--high); } .v-LIKELY.SAFE, .v-SAFE { color: var(--low); }
+  .bar { height: 10px; background: var(--border); border-radius: 6px; overflow: hidden; width: 260px; max-width: 100%; }
+  .bar > div { height: 100%; }
+  .auth { display: flex; gap: 10px; flex-wrap: wrap; }
+  .auth div { border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; }
+  .pass { color: var(--low); } .fail, .softfail { color: var(--critical); } .none, .neutral { color: var(--muted); }
+  a { color: var(--accent); }
+  .btn { background: var(--accent); color: #0d1117; border: 0; border-radius: 8px; padding: 10px 18px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .drop { border: 2px dashed var(--border); border-radius: 10px; padding: 40px; text-align: center; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .error { color: var(--critical); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px; }
+  @media (max-width: 640px) { th:nth-child(5), td:nth-child(5) { display: none; } .score { font-size: 34px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🎣 Phish<span>Lens</span></div>
+  <div class="tag">phishing e-mail triage for SOC analysts</div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer>PhishLens {{ version }} · MIT License · github.com/fat1hkaya/phishlens</footer>
+</body>
+</html>

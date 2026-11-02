@@ -1,0 +1,80 @@
+# PhishLens Analysis Report
+
+| | |
+|---|---|
+| **File** | `{{ r.filename }}` |
+| **Verdict** | **{{ r.verdict }}** |
+| **Risk score** | {{ r.score }}/100 |
+| **Threat intel** | {{ "enabled" if r.intel_enabled else "offline (heuristics only)" }} |
+| **Generated** | {{ generated_at }} - PhishLens {{ version }} |
+
+## Message headers
+
+| Field | Value |
+|---|---|
+| Subject | {{ r.headers.subject }} |
+| From | {{ r.headers.from_display }} &lt;{{ r.headers.from_address }}&gt; |
+| Reply-To | {{ r.headers.reply_to or "-" }} |
+| Return-Path | {{ r.headers.return_path or "-" }} |
+| To | {{ r.headers.to }} |
+| Date | {{ r.headers.date }} |
+| Message-ID | `{{ r.headers.message_id or "-" }}` |
+| SPF / DKIM / DMARC | `{{ r.headers.spf }}` / `{{ r.headers.dkim }}` / `{{ r.headers.dmarc }}` |
+| Originating IP | `{{ r.headers.originating_ip or "-" }}` |
+
+{% if r.headers.received_hops %}
+### Relay path (origin first)
+
+| # | From | By | IP |
+|---|---|---|---|
+{% for h in r.headers.received_hops %}
+| {{ h.hop }} | {{ h["from"] }} | {{ h.by }} | {{ h.ip }} |
+{% endfor %}
+{% endif %}
+
+## Findings ({{ r.findings | length }})
+
+{% if r.findings %}
+| Severity | Module | Finding | Detail | MITRE |
+|---|---|---|---|---|
+{% for f in r.findings %}
+| {{ f.severity.value | upper }} | {{ f.module }} | {{ f.title }} | {{ f.detail | replace("|", "\\|") }} | {{ f.mitre or "" }} |
+{% endfor %}
+{% else %}
+No suspicious indicators detected.
+{% endif %}
+
+## Indicators of compromise
+
+### URLs ({{ r.urls | length }})
+{% for u in r.urls %}
+- `{{ u.defanged }}`{% if u.display_text %} - shown as "{{ u.display_text }}"{% endif %}{% if u.reputation.summary %} - {{ u.reputation.summary }}{% endif %}
+
+{% else %}
+- none
+{% endfor %}
+
+### Attachments ({{ r.attachments | length }})
+{% for a in r.attachments %}
+- **{{ a.filename }}** ({{ a.content_type }}, {{ a.size }} bytes, detected: {{ a.detected_type or "unknown" }})
+  - MD5 `{{ a.md5 }}`
+  - SHA1 `{{ a.sha1 }}`
+  - SHA256 `{{ a.sha256 }}`{% if a.reputation.summary %} - {{ a.reputation.summary }}{% endif %}
+
+{% else %}
+- none
+{% endfor %}
+
+{% if r.mitre_techniques %}
+## MITRE ATT&CK mapping
+
+{% for t in r.mitre_techniques %}
+- [{{ t }}](https://attack.mitre.org/techniques/{{ t | replace(".", "/") }}/) - {{ mitre_names.get(t, "") }}
+{% endfor %}
+{% endif %}
+
+## Recommended actions
+
+{% for rec in recommendations %}
+{{ loop.index }}. {{ rec }}
+{% endfor %}

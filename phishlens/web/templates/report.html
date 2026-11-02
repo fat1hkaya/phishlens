@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}PhishLens - {{ r.filename }}{% endblock %}
+{% block content %}
+{% set color = {"MALICIOUS": "#ff4d6d", "SUSPICIOUS": "#ff8c42", "LIKELY SAFE": "#7ee787"}[r.verdict] %}
+<section class="panel">
+  <div class="verdict">
+    <div>
+      <div class="muted">Verdict</div>
+      <h1 style="color: {{ color }}">{{ r.verdict }}</h1>
+    </div>
+    <div>
+      <div class="muted">Risk score</div>
+      <div class="score" style="color: {{ color }}">{{ r.score }}<span class="muted" style="font-size:18px">/100</span></div>
+      <div class="bar"><div style="width: {{ r.score }}%; background: {{ color }}"></div></div>
+    </div>
+    <div class="muted" style="margin-left:auto; font-size:13px">
+      <div><b>File:</b> <code>{{ r.filename }}</code></div>
+      <div><b>Threat intel:</b> {{ "enabled" if r.intel_enabled else "offline (heuristics only)" }}</div>
+      <div><b>Generated:</b> {{ generated_at }}</div>
+      {% if not standalone %}<div style="margin-top:8px"><a class="btn secondary" href="/">Analyze another</a>
+        <a class="btn secondary" href="{{ url_for('download', rid=rid, fmt='json') }}">JSON</a>
+        <a class="btn secondary" href="{{ url_for('download', rid=rid, fmt='md') }}">Markdown</a></div>{% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Sender authentication</h2>
+  <div class="auth">
+    <div>SPF: <b class="{{ r.headers.spf }}">{{ r.headers.spf }}</b></div>
+    <div>DKIM: <b class="{{ r.headers.dkim }}">{{ r.headers.dkim }}</b></div>
+    <div>DMARC: <b class="{{ r.headers.dmarc }}">{{ r.headers.dmarc }}</b></div>
+    <div>Origin IP: <code>{{ r.headers.originating_ip or "-" }}</code></div>
+  </div>
+  <table style="margin-top:14px">
+    <tr><th style="width:160px">Subject</th><td>{{ r.headers.subject }}</td></tr>
+    <tr><th>From</th><td>{{ r.headers.from_display }} &lt;{{ r.headers.from_address }}&gt;</td></tr>
+    <tr><th>Reply-To</th><td>{{ r.headers.reply_to or "-" }}</td></tr>
+    <tr><th>Return-Path</th><td>{{ r.headers.return_path or "-" }}</td></tr>
+    <tr><th>To</th><td>{{ r.headers.to }}</td></tr>
+    <tr><th>Date</th><td>{{ r.headers.date }}</td></tr>
+    <tr><th>Message-ID</th><td class="mono">{{ r.headers.message_id or "-" }}</td></tr>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Findings ({{ r.findings | length }})</h2>
+  {% if r.findings %}
+  <table>
+    <tr><th>Severity</th><th>Module</th><th>Finding</th><th>Detail</th><th>MITRE</th></tr>
+    {% for f in r.findings %}
+    <tr>
+      <td><span class="badge sev-{{ f.severity.value }}">{{ f.severity.value }}</span></td>
+      <td class="muted nowrap">{{ f.module }}</td>
+      <td>{{ f.title }}</td>
+      <td class="mono">{{ f.detail }}</td>
+      <td class="nowrap">{% if f.mitre %}<a href="https://attack.mitre.org/techniques/{{ f.mitre | replace('.', '/') }}/" target="_blank" rel="noopener">{{ f.mitre }}</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}<p class="muted">No suspicious indicators detected.</p>{% endif %}
+</section>
+
+<div class="grid">
+<section class="panel">
+  <h2>URLs ({{ r.urls | length }})</h2>
+  {% for u in r.urls %}
+    <div class="mono" style="margin-bottom:8px">{{ u.defanged }}
+      {% if u.display_text %}<div class="muted">shown as: "{{ u.display_text }}"</div>{% endif %}
+      {% if u.reputation.summary %}<div class="muted">{{ u.reputation.summary }}</div>{% endif %}
+    </div>
+  {% else %}<p class="muted">none</p>{% endfor %}
+</section>
+<section class="panel">
+  <h2>Attachments ({{ r.attachments | length }})</h2>
+  {% for a in r.attachments %}
+    <div style="margin-bottom:10px">
+      <b>{{ a.filename }}</b> <span class="muted">· {{ a.size }} B · {{ a.detected_type or a.content_type }}</span>
+      <div class="mono muted">SHA256 {{ a.sha256 }}</div>
+      <div class="mono muted">MD5 {{ a.md5 }}</div>
+      {% if a.reputation.summary %}<div class="muted">{{ a.reputation.summary }}</div>{% endif %}
+    </div>
+  {% else %}<p class="muted">none</p>{% endfor %}
+</section>
+</div>
+
+{% if r.headers.received_hops %}
+<section class="panel">
+  <h2>Relay path (origin first)</h2>
+  <table>
+    <tr><th>#</th><th>From</th><th>By</th><th>IP</th></tr>
+    {% for h in r.headers.received_hops %}
+    <tr><td>{{ h.hop }}</td><td class="mono">{{ h["from"] }}</td><td class="mono">{{ h.by }}</td><td class="mono">{{ h.ip }}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+{% endif %}
+
+<div class="grid">
+{% if r.mitre_techniques %}
+<section class="panel">
+  <h2>MITRE ATT&amp;CK</h2>
+  {% for t in r.mitre_techniques %}
+  <div><a href="https://attack.mitre.org/techniques/{{ t | replace('.', '/') }}/" target="_blank" rel="noopener">{{ t }}</a> <span class="muted">{{ mitre_names.get(t, "") }}</span></div>
+  {% endfor %}
+</section>
+{% endif %}
+<section class="panel">
+  <h2>Recommended actions</h2>
+  <ol style="margin:0; padding-left:20px">{% for rec in recommendations %}<li>{{ rec }}</li>{% endfor %}</ol>
+</section>
+</div>
+
+{% if r.body_preview %}
+<section class="panel">
+  <h2>Body preview</h2>
+  <p class="mono muted" style="white-space:pre-wrap">{{ r.body_preview }}</p>
+</section>
+{% endif %}
+{% endblock %}
