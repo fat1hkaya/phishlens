@@ -34,6 +34,21 @@ BRANDS = {
     "garanti": "garantibbva.com.tr", "akbank": "akbank.com", "edevlet": "turkiye.gov.tr",
     "ptt": "ptt.gov.tr", "yapikredi": "yapikredi.com.tr", "isbank": "isbank.com.tr",
 }
+# Registrable domains legitimately owned by the brands above (CDNs, login portals,
+# regional sites). A host under any of these is never reported as a lookalike.
+OFFICIAL_DOMAINS = {org_domain(d) for d in BRANDS.values()} | {
+    # Microsoft
+    "microsoftonline.com", "live.com", "office365.com", "office.net", "sharepoint.com",
+    "onmicrosoft.com", "azure.com", "azureedge.net", "windows.net", "msauth.net", "hotmail.com",
+    # Google
+    "googleusercontent.com", "googleapis.com", "gstatic.com", "googlemail.com", "youtube.com", "gmail.com",
+    # Amazon
+    "amazonaws.com", "amazon.com.tr", "amazon.co.uk", "amazon.de", "media-amazon.com", "cloudfront.net",
+    # Others
+    "paypalobjects.com", "paypal.me", "icloud-content.com", "apple.news", "mzstatic.com",
+    "dropboxusercontent.com", "docusign.net", "licdn.com", "fbcdn.net", "cdninstagram.com",
+    "dhl.de", "dhl.com.tr", "fedex.com.tr", "garanti.com.tr", "akbank.com.tr", "adobelogin.com",
+}
 CREDENTIAL_WORDS = re.compile(
     r"(login|log-in|signin|sign-in|verify|verification|account|secure|update|"
     r"password|wallet|unlock|confirm|webscr|auth|session|billing)",
@@ -132,9 +147,8 @@ def lookalike_brand(host: str) -> str | None:
     if not host:
         return None
     reg = org_domain(host)
-    for legit in BRANDS.values():
-        if reg == org_domain(legit) or host.endswith("." + legit) or host == legit:
-            return None
+    if reg in OFFICIAL_DOMAINS:
+        return None
     label = reg.split(".")[0]
     normalized = label.translate(_HOMOGLYPHS).replace("rn", "m").replace("vv", "w")
     for brand in BRANDS:
@@ -164,8 +178,8 @@ def analyze_sender_domain(from_domain: str, display_name: str = "") -> list[Find
     if not brand and display_name:
         # Display name claims a brand the sending domain does not belong to.
         squashed = re.sub(r"[^a-z0-9]", "", display_name.lower())
-        for b, legit in BRANDS.items():
-            if b in squashed and org_domain(from_domain) != org_domain(legit):
+        for b in BRANDS:
+            if b in squashed and org_domain(from_domain) not in OFFICIAL_DOMAINS:
                 findings.append(Finding(SENDER_MODULE, f"Display name claims '{b}' from unrelated domain",
                                         Severity.HIGH, f"'{display_name}' <...@{from_domain}>", "T1656"))
                 break
