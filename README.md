@@ -143,7 +143,7 @@ See [`docs/detection-logic.md`](docs/detection-logic.md) for every rule, its wei
 
 ```bash
 pip install -e ".[dev]"
-pytest --cov=phishlens      # 42 tests, ~90 % coverage
+pytest --cov=phishlens      # 50 tests, ~90 % coverage
 ruff check .
 python samples/generate_samples.py
 ```

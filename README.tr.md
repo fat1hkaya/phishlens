@@ -105,7 +105,7 @@ Tüm kurallar, ağırlıkları ve ATT&CK eşleşmeleri için [`docs/detection-lo
 
 ```bash
 pip install -e ".[dev]"
-pytest --cov=phishlens      # 42 test, ~%90 kapsama
+pytest --cov=phishlens      # 50 test, ~%90 kapsama
 ruff check .
 ```
 
