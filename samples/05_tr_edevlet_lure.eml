@@ -1,0 +1,21 @@
+Received: from smtp.bulkmail.example (unknown [192.0.2.77]) by
+ mx.example.com.tr with ESMTP id e4; Mon, 02 Nov 2026 15:45:12 +0300
+Authentication-Results: mx.example.com.tr; spf=softfail
+ smtp.mailfrom=edevlet-bildirim.xyz; dmarc=fail
+Subject: Acil: =?utf-8?q?=C3=96denmemi=C5=9F_fatura_-_hesab=C4=B1n=C4=B1z_as?=
+ =?utf-8?q?k=C4=B1ya_al=C4=B1nacak?=
+From: e-Devlet =?utf-8?q?Kap=C4=B1s=C4=B1?= <bildirim@edevlet-bildirim.xyz>
+To: kullanici@example.com.tr
+Date: Mon, 02 Nov 2026 15:45:00 +0300
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Say=C4=B1n Kullan=C4=B1c=C4=B1,
+
+Ad=C4=B1n=C4=B1za =C3=B6denmemi=C5=9F fatura bulunmaktad=C4=B1r. 24 saat i=C3=
+=A7inde kimli=C4=9Finizi do=C4=9Frulay=C4=B1n, aksi halde hesab=C4=B1n=C4=B1z=
+ ask=C4=B1ya al=C4=B1nacakt=C4=B1r.
+
+Do=C4=9Frulama: https://bit.ly/3xYz-edevlet
+Alternatif: http://xn--turkye-gov-0ub.com/giris

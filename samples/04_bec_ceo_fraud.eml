@@ -1,0 +1,20 @@
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com
+ [209.85.220.41]) by mx.example.com with ESMTPS id d9; Mon, 02 Nov 2026
+ 13:31:02 +0000
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=gmail.com;
+ dkim=pass header.d=gmail.com; dmarc=pass header.from=gmail.com
+Subject: Quick request
+From: "CEO - ceo@example.com" <ceo.office.private@gmail.com>
+To: assistant@example.com
+Date: Mon, 02 Nov 2026 13:31:00 +0000
+Message-ID: <CAF=123@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+Are you available? I need a quick favor. I need you to purchase gift cards fo=
+r a client meeting today. Keep this confidential until I announce it.
+
+Sent from my iPhone

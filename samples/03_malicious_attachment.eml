@@ -1,0 +1,53 @@
+Received: from [198.51.100.23] (helo=office-pc) by mx.example.com with ESMTP
+ id c2; Mon, 02 Nov 2026 11:02:41 +0000
+Received-SPF: softfail (domain of transitioning acme-logistics.example)
+ client-ip=198.51.100.23
+Subject: Outstanding invoice #INV-20931 - payment failed
+From: Accounts Payable <billing@acme-logistics.example>
+To: finance@example.com
+Date: Mon, 02 Nov 2026 11:02:40 +0000
+X-Mailer: PHPMailer 5.2.1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============1035081819128842464=="
+
+--===============1035081819128842464==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+Your payment failed. Please review the attached outstanding invoice and remit=
+ by wire transfer today.
+
+Regards,
+Accounts Payable
+
+--===============1035081819128842464==
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Invoice_20931.pdf.exe"
+MIME-Version: 1.0
+
+TVoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAFBoaXNoTGVucyBoYXJtbGVzcyB0ZXN0IHBsYWNlaG9sZGVyIC0gbm90IGV4ZWN1dGFi
+bGU=
+
+--===============1035081819128842464==
+Content-Type: application/zip
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Invoice_scan.zip"
+MIME-Version: 1.0
+
+UEsDBBQAAAAAAGx6Yl18BzWkJwAAACcAAAAQAAAASW52b2ljZV8yMDkzMS5qcy8vIFBoaXNoTGVu
+cyBoYXJtbGVzcyB0ZXN0IHBsYWNlaG9sZGVyClBLAQIUAxQAAAAAAGx6Yl18BzWkJwAAACcAAAAQ
+AAAAAAAAAAAAAACAAQAAAABJbnZvaWNlXzIwOTMxLmpzUEsFBgAAAAABAAEAPgAAAFUAAAAAAA==
+
+--===============1035081819128842464==
+Content-Type: application/vnd.ms-excel.sheet.macroEnabled.12
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Remittance.xlsm"
+MIME-Version: 1.0
+
+UGhpc2hMZW5zIHRlc3QgcGxhY2Vob2xkZXI=
+
+--===============1035081819128842464==--

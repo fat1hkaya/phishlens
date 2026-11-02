@@ -1,0 +1,35 @@
+Received: from mail-out.github.com (mail-out.github.com [192.30.252.201]) by
+ mx.example.com with ESMTPS id a1; Mon, 02 Nov 2026 09:00:03 +0000
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=github.com;
+ dkim=pass header.d=github.com; dmarc=pass header.from=github.com
+Return-Path: <noreply@github.com>
+Subject: Your weekly repository digest
+From: GitHub <noreply@github.com>
+To: analyst@example.com
+Date: Mon, 02 Nov 2026 09:00:00 +0000
+Message-ID: <digest-123@github.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============4054485096291002548=="
+
+--===============4054485096291002548==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Hi analyst,
+
+Here is what happened in your repositories this week.
+View the activity: https://github.com/notifications
+
+Thanks,
+The GitHub Team
+
+--===============4054485096291002548==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<p>Hi analyst,</p><p>Here is what happened in your repositories this week.</p=
+><p><a href=3D"https://github.com/notifications">View activity</a></p>
+
+--===============4054485096291002548==--
